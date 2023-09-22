@@ -1,22 +1,34 @@
-import { User } from './../../domain/model/user/user';
-/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Usuarios } from 'src/persistance/model/usuarios.entity';
+import { CreateUserDto } from 'src/api/dtos/CreateUserDto.dto';
 
 @Injectable()
 export class UsersService {
-  listaUsers: User[] = [
-    new User('Josehp', 'Josehp99@gmail.com', 'Josehp123',1),
-      new User('Randy', 'Randy89@gmail.com', 'Randy123',2),
-      new User('Tomas', 'Tomas79@gmail.com', 'Tomas123',3),
-  ];
-  getAllUsers(){
-      return this.listaUsers.map((user: User) => {
-          return {
-              Id: user.Id,
-              Nombre: user.nombre_usuario,
-              Correo: user.correo_electronico,
-              Fecha_Registro: user.fecha_registro,
-        }
-    });
+  constructor(
+    @InjectRepository(Usuarios)
+    private usuariosRepo: Repository<Usuarios>,
+  ) {}
+
+  findAll() {
+    return this.usuariosRepo.find();
+  }
+  findOne(id: number) {
+    return this.usuariosRepo.findOneBy({ id: id });
+  }
+  create(body: CreateUserDto) {
+    const nesUsuario = this.usuariosRepo.create(body);
+    return this.usuariosRepo.save(nesUsuario);
+  }
+  async update(id: number, body: CreateUserDto) {
+    const usuario = await this.usuariosRepo.findOneBy({ id: id });
+    this.usuariosRepo.merge(usuario, body);
+  }
+  async delete(id: number) {
+    await this.usuariosRepo
+      .delete({ id: id })
+      .then(() => true)
+      .catch((error) => error);
   }
 }

@@ -1,11 +1,11 @@
 export class SeriesAnime {
   Id: number;
   titulo: string;
+  sinopsis: string;
+  fecha_estreno: Date;
   genero: string;
   episodios: number;
   estudio_produccion: string;
-  sinopsis: string;
-  fecha_estreno: Date;
   estado: string;
 
   constructor(

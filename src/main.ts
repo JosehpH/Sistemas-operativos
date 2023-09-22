@@ -12,7 +12,6 @@ async function bootstrap() {
       'La implementación de una arquitectura E-Commerce en la nube se espera que tenga un impacto significativo en la resolución de los problemas de caídas de servidores de Crunchyroll. Esta solución no solo debería abordar la incapacidad actual para manejar picos de tráfico, sino que también tiene el potencial de aumentar la satisfacción del cliente al brindar una experiencia de usuario más fluida y confiable.',
     )
     .setVersion('1.0')
-    .addTag('')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);

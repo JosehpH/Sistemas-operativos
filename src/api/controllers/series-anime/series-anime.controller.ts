@@ -23,6 +23,10 @@ export class SeriesAnimeController {
   getOne(@Param('id') id: number) {
     return this.seriesAnime.findOne(id);
   }
+  @Get('by_name/:name')
+  getByName(@Param('name') name: string) {
+    return this.seriesAnime.findByName(name);
+  }
 
   @Post()
   @ApiBody({ type: CreateAnimeDto })

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Animes } from 'src/persistance/model/anime.entity';
@@ -51,12 +51,21 @@ export class SeriesAnimeService {
   }
   async update(id: number, body: CreateAnimeDto) {
     const anime = await this.animesRepo.findOneBy({ id: id });
+    if (!anime) {
+      throw new NotFoundException(`Anime with id ${id} not found`);
+    }
     this.animesRepo.merge(anime, body);
+    return this.animesRepo.save(anime);
   }
   async delete(id: number) {
-    await this.animesRepo
-      .delete({ id: id })
-      .then(() => true)
-      .catch((error) => error);
+    try {
+      const deleteResult = await this.animesRepo.delete({ id: id });
+      if (deleteResult.affected === 0) {
+        throw new NotFoundException(`Anime with id ${id} not found`);
+      }
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to delete anime with id ${id}: ${error.message}`);
+    }
   }
 }

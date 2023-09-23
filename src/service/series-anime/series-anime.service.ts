@@ -18,7 +18,12 @@ export class SeriesAnimeService {
   ) {}
   findAll() {
     return this.animesRepo.find({
-      relations: ['detalle_anime', 'lista_episodidos', 'comentarios'],
+      relations: [
+        'detalle_anime',
+        'lista_episodidos',
+        'comentarios',
+        'detalle_anime.tipo',
+      ],
     });
   }
   findOne(id: number) {
@@ -29,8 +34,8 @@ export class SeriesAnimeService {
     detalle.estado = body.estado;
     detalle.visitas = body.visitas;
     detalle.cantidad_episodios = body.cantidad_episodios;
-
-    const tipos = await this.tipoAnimeRepo.findBy({ id: In([body.tipo_ids]) });
+    const tipos = await this.tipoAnimeRepo.findByIds(body.tipo_ids);
+    Logger.log(tipos);
     detalle.tipo = tipos;
 
     const newDetalle = await this.detallesRepo.save(detalle);

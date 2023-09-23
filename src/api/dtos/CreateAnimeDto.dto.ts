@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUrl, IsNumber,IsISO8601 } from 'class-validator';
+import { IsString, IsUrl, IsNumber,IsISO8601,IsArray } from 'class-validator';
 
 export class CreateAnimeDto {
   @ApiProperty()
@@ -16,6 +16,8 @@ export class CreateAnimeDto {
   sinopsis: string;
 
   @ApiProperty({ type: [Number] })
+  @IsArray()
+  @IsNumber({}, { each: true })
   tipo_ids: number[];
 
   @ApiProperty()

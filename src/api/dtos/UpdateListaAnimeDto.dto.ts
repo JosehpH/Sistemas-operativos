@@ -7,7 +7,8 @@ export class UpdateListaAnimeDto {
   @ApiProperty()
   @IsString()
   name: string;
-  @ApiProperty({type:[Number]})
+  @ApiProperty({ type: [Number] })
+  @IsNumber({},{each:true})
   @IsArray()
   episodios_id: number[];
 }

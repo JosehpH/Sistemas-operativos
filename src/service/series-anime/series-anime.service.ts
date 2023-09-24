@@ -30,7 +30,15 @@ export class SeriesAnimeService {
     return this.animesRepo.findOneBy({ id: id });
   }
   async findByName(name: string) {
-    return await this.animesRepo.findOne({ where: { titulo: name } });
+    return await this.animesRepo.findOne({
+      where: { titulo: name },
+      relations: [
+        'detalle_anime',
+        'lista_episodidos',
+        'comentarios',
+        'detalle_anime.tipo',
+      ],
+    });
   }
   async create(body: CreateAnimeDto) {
     const detalle = new DetallesAnime();
